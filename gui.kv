@@ -60,8 +60,8 @@
                     size_hint: (1,0.2)
                     orientation: "horizontal"
                     Button:
-                        text:'send'
-                        on_press: root.send_command()
+                        text:'reset'
+                        on_press: root.reset_board()
                     Button:
                         text:'new round'
                         on_press: root.start_game()
@@ -117,22 +117,28 @@
                     on_press: 
                         root.manager.transition.direction = 'right'
                         root.manager.current = 'main'
+
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text:'Settings'
+                font_size: 20
+                halign: 'right'
+                valign: 'middle'
+                background_color: (9/255,28/255,87/255,1)
+                canvas.before:
+                    Color: 
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+            Button:
+                text:'Connect DB'
+            Button:
+                text:'Load Last Round'
         GridLayout: 
             cols:2
-            FloatLayout:
-                size_hint: (0.546,1)
-                RelativeLayout:
-                    turn: 'w'
-            BoxLayout:
-                size_hint: (0.454,1)
-                orientation: "vertical"
-                BoxLayout:
-                    size_hint: (1,0.2)
-                    orientation: "horizontal"
-                    Button:
-                        text:'send'
-                    Button:
-                        text:'new round'
+            size_hint: (1,0.05)
             Label:
                 text: ""
                 halign: 'left' 

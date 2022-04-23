@@ -12,6 +12,10 @@ from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition
 
 from kivy.graphics import Rectangle
 
+#Server Communivation
+import requests
+url = 'http://localhost/adveisor/data.php'
+
 #Chess engine 
 from stockfish import Stockfish
 stockfish = Stockfish(path="stockfish_14.1_win_x64_avx2.exe", depth=15, parameters={"Threads": 2, "Minimum Thinking Time": 5})
@@ -47,12 +51,24 @@ checker_size = [0.0,0.0]
 board_size = [0.0,0.0]
 bottom_margin = 0.0
 GlobalLayout = None
+autoPlay = False
 
 #Position Conversion
 def to_chess_notation(move_from, move_to):
 	x = "abcdefgh"
 	y = "12345678"
 	return x[move_from[0]] + y[move_from[1]] + x[move_to[0]]+ y[move_to[1]]
+def to_move_position(chess_notation):
+	x = "abcdefgh"
+	y = "12345678"
+	movePos = [0,0,0,0]
+	for i in range(2):
+		for j in range(8):
+			if x[j] == chess_notation[i*2]:
+				movePos[i*2] = j
+			if y[j] == chess_notation[i*2+1]:
+				movePos[i*2+1] = j
+	return movePos
 def position_to_coordinate(pos): 
 	piece_coordinate = (checker_size[0] * pos[0] , checker_size[1] * pos[1] + board_size[1] * 0.05 )
 	return piece_coordinate
@@ -116,8 +132,10 @@ class GUILayout(Screen,Widget):
 				newPiece.previous_position = (k, j)
 				self.ids.chess_board.add_widget(newPiece)
 	#Not Implemented now
-	def send_command(self):
-		pass
+	def reset_board(self):
+		pieces = [i for i in GlobalLayout.ids.chess_board.children]
+		for piece in pieces:
+			GlobalLayout.ids.chess_board.remove_widget(piece)
 #main chess piece class
 class Piece(DragBehavior, Label, Widget):
 	def __init__(self, **args):
@@ -163,9 +181,15 @@ class Piece(DragBehavior, Label, Widget):
 
 			#get current move from chess piece, and chuck it into stockfish to do the move logic wizardy y
 			move = to_chess_notation(self.previous_position, coordinate_to_position(snap_pos))
-			print(move)
+			#print(self.previous_position, coordinate_to_position(snap_pos))
+			#print(move)
+			#print(to_move_position(move))
 			if stockfish.is_move_correct(move):
 				stockfish.make_moves_from_current_position([move])
+				#Send Data to Server
+				dataToSend = {'game_round': '1', 'game_type': 'chess', 'game_data': move, 'is_new_round': 0}
+				requests.post(url, data = dataToSend)
+
 				GlobalLayout.ids.cmd_out.text = GlobalLayout.ids.cmd_out.text + "\n" + self.side + ": " + move 
 				#print(stockfish.get_board_visual())
 				self.pos = snap_pos
@@ -184,11 +208,35 @@ class Piece(DragBehavior, Label, Widget):
 					#print('hmm_[B]:' + self.parent.turn)
 					self.parent.turn = 'w'
 					print('Now White Turn')
-				#print("yes")
+				if autoPlay == True:
+					bestMove = stockfish.get_best_move()
+					print(bestMove)
+					best_move_pos = to_move_position(bestMove)
+					stockfish.make_moves_from_current_position([bestMove])
+					dataToSend = {'game_round': '1', 'game_type': 'chess', 'game_data': bestMove, 'is_new_round': 0}
+					requests.post(url, data = dataToSend)
+					for piece in GlobalLayout.ids.chess_board.children:
+						if coordinate_to_position((piece.pos[0], piece.pos[1])) == (best_move_pos[0], best_move_pos[1]):
+							piece.previous_position  = (best_move_pos[0],best_move_pos[1]) 
+							GlobalLayout.ids.cmd_out.text = GlobalLayout.ids.cmd_out.text + "\n" + piece.side + ": " + bestMove
+							for checkpiece in self.parent.children:
+								if coordinate_to_position((checkpiece.pos[0], checkpiece.pos[1])) == (best_move_pos[2], best_move_pos[3]) and checkpiece.side == self.side:
+									GlobalLayout.ids.chess_board.remove_widget(checkpiece)
+									break
+							piece.pos = position_to_coordinate((best_move_pos[2], best_move_pos[3]))
+							if GlobalLayout.ids.chess_board.turn ==  'w':
+								GlobalLayout.ids.chess_board.turn =  'b'
+								print('Now Blacks Turn')
+							else:
+								GlobalLayout.ids.chess_board.turn = 'w'
+								print('Now White Turn')
+							break
 			else:
 				print("nope")
 				self.pos = position_to_coordinate(self.previous_position)
 				
+
+
 		return super(Piece, self).on_touch_up(touch)
 
 		
