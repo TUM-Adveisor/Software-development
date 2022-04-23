@@ -30,13 +30,13 @@ Require Python, Kivy (UI Library), Stockfish (Chess engine) and its API for Pyth
 
  - Load/Output with Forsyth–Edwards Notation
 
- - Implement restart game function, Fix start game button will spawn new pieces above existing ones
+ - Implement restart game function, Fix start game button will spawn new pieces above existing ones (Yichen Zhang)
 
  - Remake and restyle right side of GUI (Terminal and command) and Implement new functions
 
  - Implement check mate check and response, including
 
-	 >	 Pawn Promotion
+	 >	Pawn Promotion
 
 	 > 	Castling
 
