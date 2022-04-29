@@ -65,7 +65,8 @@ Require Python, Kivy (UI Library), Stockfish (Chess engine) and its API for Pyth
 
 
 * 0.1 pre Alpha Prototype
-    * Initial Upload
+    * 21.03.2022 Update 0.1.2 Initial Upload
+    * 26.04.2022 Update 0.1.2 Implemented Player VS Computer Function, Implemented basic server communication
 
 ## Documentation and further readings 
 See [Kivy examples](https://kivy.org/doc/stable/examples/gallery.html) and [Kivy Documentation](https://kivy.org/doc/stable/api-kivy.html)
