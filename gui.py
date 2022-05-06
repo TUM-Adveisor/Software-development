@@ -1,24 +1,4 @@
-#Basic Imports 
-from kivy.app import App
-from kivy.core.window import Window
-from kivy.lang import Builder
-from kivy.properties import ObjectProperty
-
-#Graphic interface imports 
-from kivy.uix.behaviors import DragBehavior
-from kivy.uix.label import Label
-from kivy.uix.widget import Widget
-from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition
-
-from kivy.graphics import Rectangle
-
-#Server Communivation
-import requests
-url = 'http://localhost/adveisor/data.php'
-
-#Chess engine 
-from stockfish import Stockfish
-stockfish = Stockfish(path="stockfish_14.1_win_x64_avx2.exe", depth=15, parameters={"Threads": 2, "Minimum Thinking Time": 5})
+import imports
 
 #Basic Settings
 Window.size = (480,320)
@@ -240,37 +220,7 @@ class Piece(DragBehavior, Label, Widget):
 		return super(Piece, self).on_touch_up(touch)
 
 		
-#Define different Chess Pieces 
-class pawn(Piece):
-	def __init__(self, side):
-		super(pawn, self).__init__()
-		self.side = side
-		self.rect.source = './img/' + side +  'P' + '.png'
-class rook(Piece):
-	def __init__(self, side):
-		super(rook, self).__init__()
-		self.side = side
-		self.rect.source = './img/' + side +  'R' + '.png'		
-class knight(Piece):
-	def __init__(self, side):
-		super(knight, self).__init__()
-		self.side = side
-		self.rect.source = './img/' + side +  'N' + '.png'
-class bishop(Piece):
-	def __init__(self, side):
-		super(bishop, self).__init__()
-		self.side = side
-		self.rect.source = './img/' + side +  'B' + '.png'
-class king(Piece):
-	def __init__(self, side):
-		super(king, self).__init__()
-		self.side = side
-		self.rect.source = './img/' + side +  'K' + '.png'
-class queen(Piece):
-	def __init__(self, side):
-		super(queen, self).__init__()
-		self.side = side
-		self.rect.source = './img/' + side +  'Q' + '.png'
+
 
 #load .kv style sheet
 Builder.load_file('gui.kv')
