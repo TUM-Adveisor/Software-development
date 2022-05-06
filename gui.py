@@ -116,23 +116,7 @@ class GUILayout(Screen,Widget):
 		pieces = [i for i in GlobalLayout.ids.chess_board.children]
 		for piece in pieces:
 			GlobalLayout.ids.chess_board.remove_widget(piece)
-#main chess piece class
-class Piece(DragBehavior, Label, Widget):
-	def __init__(self, **args):
-		super(Piece, self).__init__(**args)
-		self.numid = 0
-		self.size_hint = (0.125, 0.125)
-		self.is_active = True
-		self.previous_position = (0, 0)
-		with self.canvas:
-			self.rect = Rectangle(pos=self.pos, size=self.size)
-		self.bind(pos=self.update_rect)
-		self.bind(size=self.update_rect)
-		print('piece now at ' + str(self.pos))
-	#Canvas related positioning 
-	def update_rect(self, *args):
-		self.rect.pos = self.pos
-		self.rect.size = self.size
+
 
 	def on_touch_down(self, touch):
 		#prevent movement of chess pieces when not their turn

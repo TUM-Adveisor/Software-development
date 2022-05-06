@@ -1,5 +1,6 @@
 
 
+#main chess piece class
 class Piece(DragBehavior, Label, Widget):
 	def __init__(self, **args):
 		super(Piece, self).__init__(**args)
@@ -12,7 +13,11 @@ class Piece(DragBehavior, Label, Widget):
 		self.bind(pos=self.update_rect)
 		self.bind(size=self.update_rect)
 		print('piece now at ' + str(self.pos))
-
+	#Canvas related positioning 
+	def update_rect(self, *args):
+		self.rect.pos = self.pos
+		self.rect.size = self.size
+        
 #Define different Chess Pieces 
 class pawn(Piece):
 	def __init__(self, side):
