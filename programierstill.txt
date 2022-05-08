@@ -1,0 +1,15 @@
+- nie ohne kommentar code commiten
+- nie in eine zeile über 3/4 des bildschirms voll schreiben
+- nach klassen zwei leere Zeilen einfügen
+- nach funktionen eine leere Zeile einfügen
+- möglichst bennenungen von variablen klassen funktionen so vornemen das sie selbsterklärend sind
+und mann ohne Kommentare auskommt
+- bei namen die aus mehreren Wörtern zusammengesetz sind die wörter durch _ trennen
+- möglichst englische namen verwenden
+- alle funktionensnamen komplett in kleinbuchstaben schreiben
+- alle klassennamen mit großem erstem buchstaben schreiben
+- nach möglichkeit die einzelnen klassen zusammen mit den klassen von denen sie erben in eigene
+Datein schreiben und dan importieren
+- bitte immer mitangeben wenn externe bleoteken instaliert wurden um den code auf
+einem anderem gerät reproduzierbar zu machen, am besten mit hilfe von venv und einer requirements.txt
+schlagwort(virtuel enviorment)

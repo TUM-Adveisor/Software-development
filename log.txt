@@ -1,0 +1,44 @@
+log format:
+Schlüsselwörter für den log: 
+ copyd from direktory to direktory
+  moved from direktory to direktory
+  chanched Ausgabeparameter Funktionsname(übergabeparameter)/Variablenname
+  added Ausgabeparameter Funktionsname(übergabeparameter)/classname/dateiname
+  removed Ausgabeparameter Funktionsname(übergabeparameter)/classname/variablenname
+  fixed Ausgabeparameter Funktionsname(übergabeparameter)/classname/variablenname
+  - für private
+  + für public
+  für ausgabe und übergabeparameter IMMER die erwarteten Datenthypenangeben angeben
+                                                                        //komentar
+
+
+
+
+
+    software:
+
+
+name:monat.tag
+    /direktory der Änderung:
+        Änderungen0
+        Änderung1
+(1 Zeilen abstand)
+
+    /direktory der Änderung2
+        Änderung2
+       
+
+
+
+Matthias:05.08
+    /software
+    added log.txt
+    added programierstil.txt+
+
+    /log.txt
+    added logstielerklärung
+
+    /programierstil.txt
+    added programierstielzusammenfassung
+
+
