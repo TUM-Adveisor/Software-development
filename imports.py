@@ -17,5 +17,7 @@ import requests
 url = 'http://localhost/adveisor/data.php'
 
 #Chess engine 
-from stockfish import Stockfish
-stockfish = Stockfish(path="stockfish_14.1_win_x64_avx2.exe", depth=15, parameters={"Threads": 2, "Minimum Thinking Time": 5})
+#from stockfish import Stockfish
+#stockfish = Stockfish(path="stockfish_14.1_win_x64_avx2.exe", depth=15, parameters={"Threads": 2, "Minimum Thinking Time": 5})
+
+
