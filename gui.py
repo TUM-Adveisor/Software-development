@@ -158,7 +158,7 @@ class GUILayout(Screen,Widget):
 
 		if self.collide_point(*touch.pos):
 			GlobalLayout.send_to_back(self)
-			#print("Yeeet!" + str(touch.pos))
+			#print("Yeeet!" + str(touch.pos))1
 
 			#snap to fit
 			snap_pos = (round(self.pos[0]/ checker_size[0]) * checker_size[0],round((self.pos[1] - bottom_margin ) / checker_size[1])  * checker_size[1] + bottom_margin )
