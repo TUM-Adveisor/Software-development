@@ -1,9 +1,18 @@
 
 import games
 import piece2
-import player
 
 
+def n_player(name=None):
+    playerlist.append(player.Player(name))    
+
+def new_game(name):
+    print("welches spiel möchtets du spielen")
+    Spiel=1 #ergebniss von einlesen
+    print("Wie viele Spieler sollen mitspieln können?")
+    Playeranzahl=3 #ergebniss von einlesen
+    if Spiel==1:
+        new_game=games.Monopoly(Playeranzahl)
 
 if __name__ == '__main__':
     """print("game startet ")
@@ -16,16 +25,7 @@ if __name__ == '__main__':
     z=games.Ledders_snacks(3)
     print(z.XY_Matrix[3][1])"""
 
-    playerlist=[]
+  
 
-def n_player():
-    playerlist.append(player.Player())    
 
-def new_game():
-    print("welches spiel möchtets du spielen")
-    Spiel=1 #ergebniss von einlesen
-    print("Wie viele Spieler sollen mitspieln können?")
-    Playeranzahl=3 #ergebniss von einlesen
-    if Spiel==1:
-        new_game=games.Monopoly(Playeranzahl)
     

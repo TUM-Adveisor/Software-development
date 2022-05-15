@@ -1,9 +1,9 @@
 import random
-
+import player
 class Game:
     max_player=None
     min_player=None
-    playercount=1
+    playerlist=[]
     mover=1
     round=1
     kartenset=None
@@ -11,7 +11,8 @@ class Game:
     Scheirichkeitstufe=["computertechnik","linalg","Schaltungstheorie"]
 
     def __init__(self):
-        pass
+      pass 
+
 
 
 class Monopoly(Game):
@@ -60,11 +61,21 @@ class Monopoly(Game):
                     else:
                         j.append([0,0])
 
+        for i in range(Ap):
+            print("spielername?")
+            self.player_hinzufügen()
+
+
         if self.max_player>=Ap and self.min_player<=Ap:
             self.playercount=Ap
     
     def aktionskarte_ziehen(self):
         return self.kartenset[random.randint(1,len(self.kartenset))]
+
+    def player_hinzufügen():
+        player.Player(name="otto")
+
+
 
     def roll_the_dice(self):
         z1=random.randint(1,6)
