@@ -2,7 +2,8 @@ class Player:
     id=None
     name="OTTO"
 
-    def __init__(self,name="otto"):
-        self.name=name
+    def __init__(self,n="eric"):
+        self.name=n
+        print(self.name)
         
         

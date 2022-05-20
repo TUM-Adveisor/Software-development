@@ -8,7 +8,8 @@ class Game:
     round=1
     kartenset=None
     XY_Matrix=[]
-    Scheirichkeitstufe=["computertechnik","linalg","Schaltungstheorie"]
+    Schwirichkeitstufe=["computertechnik","linalg","Schaltungstheorie"]
+    pnew=None
 
     def __init__(self):
       pass 
@@ -52,6 +53,7 @@ class Monopoly(Game):
 "Rücken Sie vor bis zum nächsten Verkehrsfeld. Der Eigentümer erhält das Doppelte der normalen Miete. Wenn das Verkehrsfeld noch niemandem gehört, können Sie es von der Bank kaufen",
 "Rücken Sie vor bis zum nächsten Versorgungswerk. Werfen Sie die Würfel und zahlen dem Eigentümer den zehnfachen Betrag Ihres Wurfergebnisses. Wenn das Werk noch niemandem gehört, können Sie es von der Bank kaufen." ]
         self.min_player=2
+        
         for x in range(11):
             self.XY_Matrix.append([])
             for y in range(11):
@@ -63,17 +65,24 @@ class Monopoly(Game):
 
         for i in range(Ap):
             print("spielername?")
-            self.player_hinzufügen()
+            #input einfügen
+            n="input"+str(i)
+            self.playerlist.append(self.player_hinzufügen(n))
+
+            
 
 
         if self.max_player>=Ap and self.min_player<=Ap:
             self.playercount=Ap
+        else:pass #Fehler werfen einfügen
     
     def aktionskarte_ziehen(self):
         return self.kartenset[random.randint(1,len(self.kartenset))]
 
-    def player_hinzufügen():
-        player.Player(name="otto")
+    def player_hinzufügen(self,name):
+       pnew=player.Player(name)
+       return pnew
+       
 
 
 
