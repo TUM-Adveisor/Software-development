@@ -1,4 +1,5 @@
 class piece:
+    color=None
     size=None
     x_pos=None
     y_pos=None
