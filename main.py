@@ -1,7 +1,6 @@
-
 import games
-import piece2
 import player #can be delatet later
+
 
 
 
@@ -18,20 +17,15 @@ def new_game(name):
         new_game=games.Monopoly(Playeranzahl)
 
 if __name__ == '__main__':
-    l=games.Monopoly(5)
-    
-   
-    
-   
-    """
-    print("game startet "
-    player_p=piece2.Player_Ledders_and_Snackes
-    new_game=games.Ledders_snacks(5)
-    z=new_game.move()
-    print(z,"zufallszahl")
-    
-    print(l.aktionskarte_ziehen())
-    z=games.Ledders_snacks(3)
-    print(z.XY_Matrix[3][1])
+    l=games.Chess()
 
-  """##
+    new_spielfeld=[]
+    for x in range(85):
+            new_spielfeld.append([])
+            for y in range(86):
+                for j in new_spielfeld:
+                        j.append([1,0])
+                       
+
+    
+   

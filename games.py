@@ -1,20 +1,59 @@
+
+import math
 import random
 import player
+import piece2
 class Game:
     max_player=None
     min_player=None
     playerlist=[]
+    piecelist=[]
     mover=1
     round=1
     kartenset=None
     XY_Matrix=[]
     Schwirichkeitstufe=["computertechnik","linalg","Schaltungstheorie"]
     pnew=None
+    toleranz=1# abstand den figuren mindestens beim anernander vorbeizihen haben sollen
 
     def __init__(self):
       pass 
 
+    def shortest_move(self,x_start,y_start,x_end,y_end,piece):
+        
+        for i in self.piecelist:
+            h1=self.piecelist[i].x_pos
+            h2=self.piecelist[i].y_pos
+            d=self.abstand_punkt_gerade(x_start, y_start,x_end, y_end, h1, h2)
+            if d<=(self.piecelist[i].size+piece.size)/2+self.tolernaz:
+                self.suche_nächste_lücke(x_start,y_start,x_end,y_end,self.piecelist[i])
+            else:
+                self.movement(x_start,y_start,x_end,y_end)# funktion um figur tatzächlich zu bewegen
 
+    def suche_nächste_lücke(self,x_start,y_start,x_end,y_end,piece):
+        for i in self.piecelist:
+            h1=self.piecelist[i].x_pos
+            h2=self.piecelist[i].y_pos
+            d=self.abstand_punkt_gerade(x_start, y_start,x_end, y_end, h1, h2)
+    
+            
+    
+
+            
+    def abstand_punkt_gerade(self,x_start,y_start,x_end,y_end,h1,h2): #liefert falsche ergebnisse
+        m=[x_end-x_start,y_end-y_start]
+        lam=(-y_start*m[1]-x_start*m[0]+h1*m[0]+h2+m[1])/((m[0]**2)+(m[1]**2))
+        s1=x_start+lam*m[0]
+        s2=y_start+lam*m[1]
+
+        d=self.hypotenusen_länge(s1,s2,h1,h2)
+        return d
+
+        
+    
+    def hypotenusen_länge(self,x_start,y_start,x_end,y_end):
+        h=math.sqrt(((x_end-x_start)**2)+((y_end-y_start)**2))
+        return h
 
 class Monopoly(Game):
     def __init__(self,Ap):
@@ -130,5 +169,99 @@ class Ledders_snacks(Game):
          
        return self.roll_the_dice()
        print("welche figur beawegen?")
+
+
+class Chess(Game):
+    def __init__(self):
+        self.max_player=2
+        self.min_player=2
+        for x in range(8):
+            self.XY_Matrix.append([])
+            for y in range(8):
+                for j in self.XY_Matrix:
+                    p_new=self.add_piece(x,y)
+                    j.append(p_new)# 1/1 ist unten links
+                    self.piecelist.append(p_new)
+        self.figuren_in_start_position()
+        self.playerlist.append (self.new_player())
+        self.playerlist.append (self.new_player(playerlist[0]))
+        self.playerlist[0].nextplayer=playerlist[1]
+    
+    def new_player(self):
+        t=len(self.playerlist) 
+        if t==0:
+            c=0
+        else:
+            c=1
+        name=str(input("name des pielers"))
+        Ki=int(input("soll der spieler eine Ki sein, bitte antworten sie mit 1 falls ja und 0 falls nei"))
+        return player.Player(name,c,Ki)
+
+        
+
+    def add_piece(self,x_pos, y_pos):
+
+
+        c=1
+        if y_pos<=2:
+            c=0  #0 steht für weiß
+
+        if y_pos==2 or y_pos==7:
+            x_pos_real=recognition.getpos('Pawn')
+            y_pos_real=recognition.get_x_pos('Pawn')
+            new_p=piece2.Pawn(c,x_pos_real,y_pos_real)
+            return new_p
+
+        elif y_pos==1:
+            if x_pos==1 or x_pos==8:
+                x_pos_real=recognition.get_x_pos('Rook') # aufruf der visual rcognition um an positionsdaten zu kommen
+                y_pos_real=recognition.get_x_pos('Rook')
+                new_p=piece2.Rook(c,x_pos_real,y_pos_real)
+                return new_p
+            elif x_pos==2 or x_pos==7:
+                x_pos_real=recognition.getpos('Knight')
+                y_pos_real=recognition.get_x_pos('Knight')
+                new_p=piece2.Knight(c,x_pos_real,y_pos_real)
+            elif x_pos==3 or x_pos==6:
+                x_pos_real=recognition.getpos('Bishop')
+                y_pos_real=recognition.get_x_pos('Bishop')
+                new_p=piece2.Bishop(c,x_pos_real,y_pos_real)
+                return new_p
+            elif x_pos==4:
+                x_pos_real=recognition.getpos('King')
+                y_pos_real=recognition.get_x_pos('King')
+                p_new=piece2.King(c,x_pos_real,y_pos_real)
+                return p_new
+            else:
+                x_pos_real=recognition.getpos('Queen')
+                y_pos_real=recognition.get_x_pos('Queen')
+                p_new=piece2.Queen(c,x_pos_real,y_pos_real)
+                return p_new
+            
+    def real_to_logic_postion(x_pos,y_pos):
+        höhe_feld=10
+        breite_feld=10 #größe der spielfelder einsetzen
+
+        for i in range(8):
+        
+            if y_pos // höhe_feld<i:
+                y_pos=i
+        
+        for i in range(8):
+            print(i)
+            if x_pos // breite_feld <i:
+                x_pos=i
+        return[x_pos,y_pos]
+
+    def figuren_in_start_position():
+        pass
+       
+
+    def move():
+
+
+
+
+
 
 
