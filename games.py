@@ -1,4 +1,4 @@
-
+import recognition
 import math
 import random
 import player
@@ -8,11 +8,12 @@ class Game:
     min_player=None
     playerlist=[]
     piecelist=[]
+    recognition=None
     mover=1
     round=1
     kartenset=None
     XY_Matrix=[]
-    Schwirichkeitstufe=["computertechnik","linalg","Schaltungstheorie"]
+    Schwirichkeitstufe=None
     pnew=None
     toleranz=1# abstand den figuren mindestens beim anernander vorbeizihen haben sollen
 
@@ -173,6 +174,7 @@ class Ledders_snacks(Game):
 
 class Chess(Game):
     def __init__(self):
+        self.recognition=recognition.Recognition()
         self.max_player=2
         self.min_player=2
         for x in range(8):
@@ -184,61 +186,63 @@ class Chess(Game):
                     self.piecelist.append(p_new)
         self.figuren_in_start_position()
         self.playerlist.append (self.new_player())
-        self.playerlist.append (self.new_player(playerlist[0]))
-        self.playerlist[0].nextplayer=playerlist[1]
+        self.playerlist.append (self.new_player(self.playerlist[0]))
+        self.playerlist[0].nextplayer=self.playerlist[1]
+        S=int(input("gebe für schwierichkeitstufe Computertechnik 1 ,für Linare Algebra 2 oder für Schaltungstheorie 3 an: "))
+        Schwierichkeitstufen_Liste=["Computertechnik","Linare Algebra","Schaltungstheorie"]
+        self.Schwirichkeitstufe=Schwierichkeitstufen_Liste[S]
     
-    def new_player(self):
+    def new_player(self,nex_player=0):
         t=len(self.playerlist) 
         if t==0:
             c=0
         else:
             c=1
-        name=str(input("name des pielers"))
-        Ki=int(input("soll der spieler eine Ki sein, bitte antworten sie mit 1 falls ja und 0 falls nei"))
-        return player.Player(name,c,Ki)
+        name=str(input("name des pielers:  "))
+        Ki=int(input("soll der spieler eine Ki sein, bitte antworten sie mit 1 falls ja und 0 falls nein:  "))
+        return player.Player(c,name,Ki)
 
         
 
     def add_piece(self,x_pos, y_pos):
-
-
         c=1
         if y_pos<=2:
             c=0  #0 steht für weiß
 
         if y_pos==2 or y_pos==7:
-            x_pos_real=recognition.getpos('Pawn')
-            y_pos_real=recognition.get_x_pos('Pawn')
+    
+            x_pos_real=self.recognition.get_x_pos('Pawn')
+            y_pos_real=self.recognition.get_y_pos('Pawn')
             new_p=piece2.Pawn(c,x_pos_real,y_pos_real)
             return new_p
 
         elif y_pos==1:
             if x_pos==1 or x_pos==8:
-                x_pos_real=recognition.get_x_pos('Rook') # aufruf der visual rcognition um an positionsdaten zu kommen
-                y_pos_real=recognition.get_x_pos('Rook')
+                x_pos_real=self.recognition.get_x_pos('Rook') # aufruf der visual rcognition um an positionsdaten zu kommen
+                y_pos_real=self.recognition.get_y_pos('Rook')
                 new_p=piece2.Rook(c,x_pos_real,y_pos_real)
                 return new_p
             elif x_pos==2 or x_pos==7:
-                x_pos_real=recognition.getpos('Knight')
-                y_pos_real=recognition.get_x_pos('Knight')
+                x_pos_real=self.recognition.get_x_pos('Knight')
+                y_pos_real=self.recognition.get_y_pos('Knight')
                 new_p=piece2.Knight(c,x_pos_real,y_pos_real)
             elif x_pos==3 or x_pos==6:
-                x_pos_real=recognition.getpos('Bishop')
-                y_pos_real=recognition.get_x_pos('Bishop')
+                x_pos_real=self.recognition.get_x_pos('Bishop')
+                y_pos_real=self.recognition.get_y_pos('Bishop')
                 new_p=piece2.Bishop(c,x_pos_real,y_pos_real)
                 return new_p
             elif x_pos==4:
-                x_pos_real=recognition.getpos('King')
-                y_pos_real=recognition.get_x_pos('King')
+                x_pos_real=self.recognition.get_x_pos('King')
+                y_pos_real=self.recognition.get_y_pos('King')
                 p_new=piece2.King(c,x_pos_real,y_pos_real)
                 return p_new
             else:
-                x_pos_real=recognition.getpos('Queen')
-                y_pos_real=recognition.get_x_pos('Queen')
+                x_pos_real=self.recognition.get_x_pos('Queen')
+                y_pos_real=self.recognition.get_y_pos('Queen')
                 p_new=piece2.Queen(c,x_pos_real,y_pos_real)
                 return p_new
             
-    def real_to_logic_postion(x_pos,y_pos):
+    def real_to_logic_postion(self,x_pos,y_pos):
         höhe_feld=10
         breite_feld=10 #größe der spielfelder einsetzen
 
@@ -253,11 +257,12 @@ class Chess(Game):
                 x_pos=i
         return[x_pos,y_pos]
 
-    def figuren_in_start_position():
+    def figuren_in_start_position(self):
         pass
        
 
     def move():
+        pass
 
 
 

@@ -4,7 +4,9 @@ class piece:
     x_pos_real=None
     y_pos_real=None
     
-    def __init__(self,color):
+    def __init__(self,color,x_pos_real,y_pos_real):
+        self.y_pos_real=y_pos_real
+        self.x_pos_real=x_pos_real
         if color==0:
             self.color=="weiß"
         elif color==1:
