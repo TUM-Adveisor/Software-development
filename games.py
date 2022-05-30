@@ -1,4 +1,5 @@
 import recognition
+import bewegungsystem
 import math
 import random
 import player
@@ -16,6 +17,11 @@ class Game:
     Schwirichkeitstufe=None
     pnew=None
     toleranz=1# abstand den figuren mindestens beim anernander vorbeizihen haben sollen
+    bewegungsytem=None
+    feldgröße_y=None
+    feldgröße_x=None
+    felderstart_x=None
+    felderstart_y=None
 
     def __init__(self):
       pass 
@@ -174,23 +180,31 @@ class Ledders_snacks(Game):
 
 class Chess(Game):
     def __init__(self):
+        self.bewegungsytem=bewegungsystem.Bewegungssystem()
         self.recognition=recognition.Recognition()
         self.max_player=2
         self.min_player=2
+        self.feldgröße_y=40
+        self.feldgröße_x=40
+        self.felderstart_x=70
+        self.felderstart_y=90
         for x in range(8):
             self.XY_Matrix.append([])
-            for y in range(8):
-                for j in self.XY_Matrix:
-                    p_new=self.add_piece(x,y)
-                    j.append(p_new)# 1/1 ist unten links
-                    self.piecelist.append(p_new)
-        self.figuren_in_start_position()
+            for y in range(8): 
+                print(self.XY_Matrix)                                            
+                p_new=self.add_piece(x+1,y+1)
+                self.XY_Matrix[x].append([x,y])# 1/1 ist unten links
+                self.piecelist.append(p_new)
+    
+        
+
         self.playerlist.append (self.new_player())
         self.playerlist.append (self.new_player(self.playerlist[0]))
         self.playerlist[0].nextplayer=self.playerlist[1]
         S=int(input("gebe für schwierichkeitstufe Computertechnik 1 ,für Linare Algebra 2 oder für Schaltungstheorie 3 an: "))
         Schwierichkeitstufen_Liste=["Computertechnik","Linare Algebra","Schaltungstheorie"]
         self.Schwirichkeitstufe=Schwierichkeitstufen_Liste[S]
+        
     
     def new_player(self,nex_player=0):
         t=len(self.playerlist) 
@@ -211,40 +225,47 @@ class Chess(Game):
 
         if y_pos==2 or y_pos==7:
     
-            x_pos_real=self.recognition.get_x_pos('Pawn')
-            y_pos_real=self.recognition.get_y_pos('Pawn')
-            new_p=piece2.Pawn(c,x_pos_real,y_pos_real)
+            pos_real=self.recognition.get_pos('Pawn',c)
+            
+            new_pos_real=self.logic_to_real_postion(x_pos,y_pos)
+            self.bewegungsytem.bewege_von_nach(pos_real[0],pos_real[1],new_pos_real[0],new_pos_real[1],"test") #richtige positionen einfügen
+            new_p=piece2.Pawn(c,new_pos_real[0],new_pos_real[1])
             return new_p
 
         elif y_pos==1:
             if x_pos==1 or x_pos==8:
-                x_pos_real=self.recognition.get_x_pos('Rook') # aufruf der visual rcognition um an positionsdaten zu kommen
-                y_pos_real=self.recognition.get_y_pos('Rook')
-                new_p=piece2.Rook(c,x_pos_real,y_pos_real)
+                pos_real=self.recognition.get_pos('Rook',c) # aufruf der visual rcognition um an positionsdaten zu kommen
+                new_pos_real=self.logic_to_real_postion(x_pos,y_pos)
+                self.bewegungsytem.bewege_von_nach(pos_real[0],pos_real[1],new_pos_real[0],new_pos_real[1],"test") #richtige positionen einfü
+                new_p=piece2.Rook(c,new_pos_real[0],new_pos_real[1])
                 return new_p
             elif x_pos==2 or x_pos==7:
-                x_pos_real=self.recognition.get_x_pos('Knight')
-                y_pos_real=self.recognition.get_y_pos('Knight')
-                new_p=piece2.Knight(c,x_pos_real,y_pos_real)
+                pos_real=self.recognition.get_pos('Knight',c)
+                new_pos_real=self.logic_to_real_postion(x_pos,y_pos)
+                self.bewegungsytem.bewege_von_nach(pos_real[1],pos_real[0],new_pos_real[0],new_pos_real[1],"test") #richtige positionen einfü
+                new_p=piece2.Knight(c,new_pos_real[0],new_pos_real[1])
             elif x_pos==3 or x_pos==6:
-                x_pos_real=self.recognition.get_x_pos('Bishop')
-                y_pos_real=self.recognition.get_y_pos('Bishop')
-                new_p=piece2.Bishop(c,x_pos_real,y_pos_real)
+                pos_real=self.recognition.get_pos('Bishop',c)
+                new_pos_real=self.logic_to_real_postion(x_pos,y_pos)
+                self.bewegungsytem.bewege_von_nach(pos_real[0],pos_real[1],new_pos_real[0],new_pos_real[1],"test") #richtige positionen einfü
+                new_p=piece2.Bishop(c,new_pos_real[0],new_pos_real[1])
                 return new_p
             elif x_pos==4:
-                x_pos_real=self.recognition.get_x_pos('King')
-                y_pos_real=self.recognition.get_y_pos('King')
-                p_new=piece2.King(c,x_pos_real,y_pos_real)
+                pos_real=self.recognition.get_pos('King',c)
+                new_pos_real=self.logic_to_real_postion(x_pos,y_pos)
+                self.bewegungsytem.bewege_von_nach(pos_real[0],pos_real[1],new_pos_real[0],new_pos_real[1],"test") #richtige positionen einfü
+                p_new=piece2.King(c,pos_real[0],new_pos_real[1])
                 return p_new
             else:
-                x_pos_real=self.recognition.get_x_pos('Queen')
-                y_pos_real=self.recognition.get_y_pos('Queen')
-                p_new=piece2.Queen(c,x_pos_real,y_pos_real)
+                pos_real=self.recognition.get_pos('Queen',c)
+                new_pos_real=self.logic_to_real_postion(x_pos,y_pos)
+                self.bewegungsytem.bewege_von_nach(pos_real[0],pos_real[1],new_pos_real[0],new_pos_real[1],"test") #richtige positionen einfü
+                p_new=piece2.Queen(c,new_pos_real[0],new_pos_real[1])
                 return p_new
             
     def real_to_logic_postion(self,x_pos,y_pos):
-        höhe_feld=10
-        breite_feld=10 #größe der spielfelder einsetzen
+        höhe_feld=self.feldgröße_x
+        breite_feld=self.feldgröße_y
 
         for i in range(8):
         
@@ -257,8 +278,12 @@ class Chess(Game):
                 x_pos=i
         return[x_pos,y_pos]
 
-    def figuren_in_start_position(self):
-        pass
+    def logic_to_real_postion(self,x_pos,y_pos):
+
+        real_postion_y=self.felderstart_x+((y_pos)*self.feldgröße_y)
+        real_postion_x=self.felderstart_x+((x_pos)*self.feldgröße_x)
+    
+        return [real_postion_x,real_postion_y]
        
 
     def move():
