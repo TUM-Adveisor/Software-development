@@ -29,4 +29,3 @@ if __name__ == '__main__':
                 for j in new_spielfeld:
                         j.append([1,0])
     l=games.Chess()
-    

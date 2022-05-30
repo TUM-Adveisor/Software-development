@@ -4,6 +4,8 @@ import math
 import random
 import player
 import piece2
+import time
+
 class Game:
     max_player=None
     min_player=None
@@ -22,6 +24,7 @@ class Game:
     feldgröße_x=None
     felderstart_x=None
     felderstart_y=None
+    
 
     def __init__(self):
       pass 
@@ -111,7 +114,7 @@ class Monopoly(Game):
 
         for i in range(Ap):
             print("spielername?")
-            #input einfügen
+            
             n="input"+str(i)
             self.playerlist.append(self.player_hinzufügen(n))
 
@@ -190,11 +193,14 @@ class Chess(Game):
         self.felderstart_y=90
         for x in range(8):
             self.XY_Matrix.append([])
-            for y in range(8): 
-                print(self.XY_Matrix)                                            
+            for y in range(8):                                           
                 p_new=self.add_piece(x+1,y+1)
-                self.XY_Matrix[x].append([x,y])# 1/1 ist unten links
-                self.piecelist.append(p_new)
+                self.XY_Matrix[x].append([x,y,p_new])# 1/1 ist unten links
+                print(self.XY_Matrix)
+                if p_new==0:
+                    pass
+                else:
+                    self.piecelist.append(p_new)
     
         
 
@@ -204,9 +210,10 @@ class Chess(Game):
         S=int(input("gebe für schwierichkeitstufe Computertechnik 1 ,für Linare Algebra 2 oder für Schaltungstheorie 3 an: "))
         Schwierichkeitstufen_Liste=["Computertechnik","Linare Algebra","Schaltungstheorie"]
         self.Schwirichkeitstufe=Schwierichkeitstufen_Liste[S]
+        self.move(self.playerlist[0])
         
-    
-    def new_player(self,nex_player=0):
+
+    def new_player(self,next_player=None):
         t=len(self.playerlist) 
         if t==0:
             c=0
@@ -214,11 +221,12 @@ class Chess(Game):
             c=1
         name=str(input("name des pielers:  "))
         Ki=int(input("soll der spieler eine Ki sein, bitte antworten sie mit 1 falls ja und 0 falls nein:  "))
-        return player.Player(c,name,Ki)
+        return player.Player(c,next_player,name,Ki)
 
         
 
     def add_piece(self,x_pos, y_pos):
+        
         c=1
         if y_pos<=2:
             c=0  #0 steht für weiß
@@ -232,7 +240,7 @@ class Chess(Game):
             new_p=piece2.Pawn(c,new_pos_real[0],new_pos_real[1])
             return new_p
 
-        elif y_pos==1:
+        elif y_pos==1 or y_pos==8:
             if x_pos==1 or x_pos==8:
                 pos_real=self.recognition.get_pos('Rook',c) # aufruf der visual rcognition um an positionsdaten zu kommen
                 new_pos_real=self.logic_to_real_postion(x_pos,y_pos)
@@ -248,6 +256,7 @@ class Chess(Game):
                 pos_real=self.recognition.get_pos('Bishop',c)
                 new_pos_real=self.logic_to_real_postion(x_pos,y_pos)
                 self.bewegungsytem.bewege_von_nach(pos_real[0],pos_real[1],new_pos_real[0],new_pos_real[1],"test") #richtige positionen einfü
+                
                 new_p=piece2.Bishop(c,new_pos_real[0],new_pos_real[1])
                 return new_p
             elif x_pos==4:
@@ -256,12 +265,14 @@ class Chess(Game):
                 self.bewegungsytem.bewege_von_nach(pos_real[0],pos_real[1],new_pos_real[0],new_pos_real[1],"test") #richtige positionen einfü
                 p_new=piece2.King(c,pos_real[0],new_pos_real[1])
                 return p_new
-            else:
+            elif x_pos==5:
                 pos_real=self.recognition.get_pos('Queen',c)
                 new_pos_real=self.logic_to_real_postion(x_pos,y_pos)
                 self.bewegungsytem.bewege_von_nach(pos_real[0],pos_real[1],new_pos_real[0],new_pos_real[1],"test") #richtige positionen einfü
                 p_new=piece2.Queen(c,new_pos_real[0],new_pos_real[1])
                 return p_new
+            else:
+                return 0
             
     def real_to_logic_postion(self,x_pos,y_pos):
         höhe_feld=self.feldgröße_x
@@ -273,7 +284,6 @@ class Chess(Game):
                 y_pos=i
         
         for i in range(8):
-            print(i)
             if x_pos // breite_feld <i:
                 x_pos=i
         return[x_pos,y_pos]
@@ -286,8 +296,22 @@ class Chess(Game):
         return [real_postion_x,real_postion_y]
        
 
-    def move():
-        pass
+    def move(self,player_p):
+        list=player_p.get_move(self.recognition)
+        start=list[0]
+        end=list[1]
+        print(self.XY_Matrix[end[0]-1][end[1]-1][2],self.XY_Matrix[start[0]-1][start[1]-1])
+        self.XY_Matrix[end[0]-1][end[1]-1][2]=self.XY_Matrix[start[0]-1][start[1]-1][2]
+        self.XY_Matrix[start[0]-1][start[1]-1][2]=None
+        print(self.XY_Matrix[end[0]-1][end[1]-1][2],self.XY_Matrix[start[0]-1][start[1]-1])
+        start=self.logic_to_real_postion(start[0],start[1])
+        end=self.logic_to_real_postion(end[0],end[1])
+        
+        
+        time.sleep(5)
+        self.bewegungsytem.bewege_von_nach(start[0],start[1],end[0],end[1], "nex_player")
+        self.move(list[2])
+
 
 
 

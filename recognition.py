@@ -1,7 +1,7 @@
 class Recognition:
     def __init__(self):
-        print("recognition startet" )
-
+        #print("recognition startet" )
+        pass
     def get_pos(self,piece_thype,c):
         if piece_thype=='Pawn':
             return [70,90]
