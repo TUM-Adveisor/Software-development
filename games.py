@@ -182,8 +182,8 @@ class Ledders_snacks(Game):
 
 
 class Chess(Game):
-    def __init__(self):
-        self.bewegungsytem=bewegungsystem.Bewegungssystem()
+    def __init__(self,config):
+        self.bewegungsytem=bewegungsystem.Bewegungssystem(config)
         self.recognition=recognition.Recognition()
         self.max_player=2
         self.min_player=2
@@ -195,12 +195,9 @@ class Chess(Game):
             self.XY_Matrix.append([])
             for y in range(8):                                           
                 p_new=self.add_piece(x+1,y+1)
-                self.XY_Matrix[x].append([x,y,p_new])# 1/1 ist unten links
-                print(self.XY_Matrix)
-                if p_new==0:
-                    pass
-                else:
-                    self.piecelist.append(p_new)
+                self.XY_Matrix[x].append(p_new)# 1/1 ist unten links
+                #print(self.XY_Matrix)
+                self.piecelist.append(p_new)
     
         
 
@@ -209,11 +206,11 @@ class Chess(Game):
         self.playerlist[0].nextplayer=self.playerlist[1]
         S=int(input("gebe für schwierichkeitstufe Computertechnik 1 ,für Linare Algebra 2 oder für Schaltungstheorie 3 an: "))
         Schwierichkeitstufen_Liste=["Computertechnik","Linare Algebra","Schaltungstheorie"]
-        self.Schwirichkeitstufe=Schwierichkeitstufen_Liste[S]
+        self.Schwirichkeitstufe=Schwierichkeitstufen_Liste[S-1]
         self.move(self.playerlist[0])
         
 
-    def new_player(self,next_player=None):
+    def new_player(self,next_player=0):
         t=len(self.playerlist) 
         if t==0:
             c=0
@@ -300,15 +297,20 @@ class Chess(Game):
         list=player_p.get_move(self.recognition)
         start=list[0]
         end=list[1]
-        print(self.XY_Matrix[end[0]-1][end[1]-1][2],self.XY_Matrix[start[0]-1][start[1]-1])
-        self.XY_Matrix[end[0]-1][end[1]-1][2]=self.XY_Matrix[start[0]-1][start[1]-1][2]
-        self.XY_Matrix[start[0]-1][start[1]-1][2]=None
-        print(self.XY_Matrix[end[0]-1][end[1]-1][2],self.XY_Matrix[start[0]-1][start[1]-1])
-        start=self.logic_to_real_postion(start[0],start[1])
-        end=self.logic_to_real_postion(end[0],end[1])
+       
+        
+        print(self.XY_Matrix[start[0]-1][start[1]-1])
+        print(self.XY_Matrix[end[0]-1][end[1]-1])
+        self.XY_Matrix[end[0]-1][end[1]-1]=self.XY_Matrix[start[0]-1][start[1]-1]
+        self.XY_Matrix[start[0]-1][start[1]-1]=0
+        print(self.XY_Matrix[start[0]-1][start[1]-1])
+        print(self.XY_Matrix[end[0]-1][end[1]-1])
+        start=self.logic_to_real_postion(start[0],start[1]-1)
+        end=self.logic_to_real_postion(end[0]-1,end[1]-1)
         
         
-        time.sleep(5)
+        time.sleep(5) #später entfernen
+        
         self.bewegungsytem.bewege_von_nach(start[0],start[1],end[0],end[1], "nex_player")
         self.move(list[2])
 

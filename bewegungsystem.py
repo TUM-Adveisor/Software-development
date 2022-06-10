@@ -5,21 +5,26 @@ import time
 
 class Bewegungssystem():
     connection=None
+   
+    config=None
     #nl=0
-    def __init__(self):
+    def __init__(self,config):
+        self.config=config
         self.connection = gcodelib.Connection("/dev/ttyUSB0")
         self.connection.console_read()
+        
         self.connection.home()
     def bewege_von_nach(self,x_start,y_start,x_end,y_end, note):
         #self.nl=self.nl+1
         #print(self.nl)
-        if x_start<0 or y_start<0 or x_end>400 or y_end>405 or x_end<0 or y_end<0 or x_start>400 or y_start>405:
+        if y_start<0 or x_start<0:
             print("moving out of range")
         else:
             print(note)
             self.connection.magnet_control(False)
             #print("magnet off")
             self.connection.send_coords(x_start,y_start)
+            self.connection.wait_for_movement_start()
             #print("header started")
             while (self.connection._status != "Idle"):
                 #self.connection.print_coords()
@@ -29,6 +34,7 @@ class Bewegungssystem():
             self.connection.magnet_control(True)
             #print("magnet on")
             self.connection.send_coords(x_end,y_end)
+            self.connection.wait_for_movement_start()
             #print("header started")
             while (self.connection._status != "Idle"):
                 #self.connection.print_coords()
@@ -36,3 +42,4 @@ class Bewegungssystem():
             #print("header stopped")
             self.connection.magnet_control(False)
             #print("magnet off")
+    

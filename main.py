@@ -1,11 +1,13 @@
 import games
+import config
 import player #can be delatet later
 
 import bewegungsystem
-#b=bewegungsystem.Bewegungssystem()
+config=config.Config()
+b=bewegungsystem.Bewegungssystem(config)
 
 
-#b.bewege_von_nach(70,90,310,150 ,"test")
+b.bewege_von_nach(400,400,200,000,"test")
 
 
 
@@ -22,10 +24,6 @@ def new_game(name):
         new_game=games.Monopoly(Playeranzahl)
 
 if __name__ == '__main__':
-    new_spielfeld=[]
-    for x in range(85):
-            new_spielfeld.append([])
-            for y in range(86):
-                for j in new_spielfeld:
-                        j.append([1,0])
-    l=games.Chess()
+    #config=config.Config()
+    print("Game startet")
+    #l=games.Chess(config)
