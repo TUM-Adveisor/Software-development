@@ -21,7 +21,9 @@ class Bewegungssystem():
         self.neu[1]=y_start
         #self.nl=self.nl+1
         #print(self.nl)
-        if y_start<0 or x_start<0:
+        if y_start<0 or x_start<0 or y_end<0 or x_end<0: 
+            
+            #or y_start>410 or x_start>400 or y_end>=10 or x_end>400:
             print("moving out of range")
         else:
             print(note)
@@ -35,17 +37,18 @@ class Bewegungssystem():
                 #print("header started")
                 while (self.connection._status != "Idle"):
                     #self.connection.print_coords()
-                    time.sleep(1/10)
+                    time.sleep(2/10)
                 #print("header stopped")
 
             self.connection.magnet_control(True)
+            time.sleep(3/10)
             #print("magnet on")
             self.connection.send_coords(x_end,y_end)
             self.connection.wait_for_movement_start()
             #print("header started")
             while (self.connection._status != "Idle"):
                 #self.connection.print_coords()
-                time.sleep(1/10)
+                time.sleep(2/10)
             #print("header stopped")
             self.connection.magnet_control(False)
             #print("magnet off")
